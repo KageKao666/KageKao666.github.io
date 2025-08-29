@@ -61,9 +61,9 @@
 
         #content {
             position: absolute;
-            bottom: 5%;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             width: 80%;
             text-align: center;
             z-index: 5;
@@ -75,6 +75,7 @@
             letter-spacing: 0.1em;
             text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
             transition: opacity 1.5s ease-in-out;
+            margin-bottom: 40px; /* Добавим отступ снизу */
         }
         .typing::after {
             content: '█';
@@ -83,6 +84,35 @@
         @keyframes blink { 50% { opacity: 0; } }
         
         @media (max-width: 768px) { #quote { font-size: 3vw; } }
+
+        /* Стили для навигации */
+        #navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            font-family: 'Roboto Mono', monospace;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 1.2vw;
+            letter-spacing: 0.1em;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 160, 60, 0.5);
+        }
+
+        @media (max-width: 768px) { .nav-link { font-size: 2.5vw; padding: 10px 20px;} }
         
         #player-icon {
             position: absolute;
@@ -111,6 +141,10 @@
         
         <div id="content">
             <div id="quote" class="typing"></div>
+            <nav id="navigation">
+                <a href="https://kagekao666.github.io/filesharingsites.html" class="nav-link">Лучшие файлообменники</a>
+                <!-- Сюда можно добавлять другие ссылки -->
+            </nav>
         </div>
         
         <div id="player-icon">
@@ -195,7 +229,6 @@
         }
         
         const quotes = [ "All those moments will be lost in time...", "like tears in rain.", "Sometimes to love someone, you got to be a stranger.", "The view is different each time you look.", "A new life awaits you in the off-world colonies.", "What is a soul? A series of electrical impulses.", "The light that burns twice as bright burns half as long.", "Memories... you're talking about memories.", "It's too bad she won't live. But then again, who does?", "If you could see what I've seen with your eyes." ];
-        // ... (The rest of the script is largely unchanged, just integrating the new weather state)
         
         const video = document.getElementById('video-bg');
         const audio = document.getElementById('track');
@@ -206,7 +239,7 @@
         async function quoteCycle() { while (true) { const currentQuote = quotes[quoteIndex]; quoteEl.classList.add('typing'); for (let i = 0; i < currentQuote.length; i++) { quoteEl.textContent += currentQuote.charAt(i); await sleep(100); } quoteEl.classList.remove('typing'); await sleep(4000); quoteEl.style.opacity = '0'; await sleep(1500); quoteEl.textContent = ''; quoteEl.style.opacity = '1'; quoteIndex = (quoteIndex + 1) % quotes.length; } }
         playerIcon.addEventListener('click', () => { if (audio.paused) { audio.play(); playerIcon.classList.add('playing'); } else { audio.pause(); playerIcon.classList.remove('playing'); } });
         const scene = document.getElementById('scene');
-        scene.addEventListener('mousemove', (e) => { const x = (window.innerWidth / 2 - e.pageX) / 25; const y = (window.innerHeight / 2 - e.pageY) / 25; document.getElementById('video-bg').style.transform = `translateX(calc(-50% + ${-x}px)) translateY(calc(-50% + ${-y}px))`; document.getElementById('content').style.transform = `translateX(calc(-50% + ${x*1.5}px)) translateY(${y*1.5}px)`; canvas.style.transform = `translateX(${x*2}px) translateY(${y*2}px)`; });
+        scene.addEventListener('mousemove', (e) => { const x = (window.innerWidth / 2 - e.pageX) / 25; const y = (window.innerHeight / 2 - e.pageY) / 25; document.getElementById('video-bg').style.transform = `translateX(calc(-50% + ${-x}px)) translateY(calc(-50% + ${-y}px))`; document.getElementById('content').style.transform = `translateX(calc(-50% + ${x*1.5}px)) translateY(calc(-50% + ${y*1.5}px))`; canvas.style.transform = `translateX(${x*2}px) translateY(${y*2}px)`; });
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
         function changeWeather() {
