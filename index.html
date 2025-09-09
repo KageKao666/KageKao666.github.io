@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tears in Rain</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap');
+
+        :root {
+            --primary-color: rgba(0, 255, 255, 0.7); /* Основной цвет (циан) */
+            --glow-color: rgba(0, 255, 255, 0.8);
+            --background-color: rgba(10, 25, 47, 0.3);
+            --border-color: rgba(0, 255, 255, 0.2);
+            --text-color: rgba(255, 255, 255, 0.85);
+        }
 
         body, html {
             margin: 0;
@@ -14,14 +22,14 @@
             height: 100%;
             overflow: hidden;
             background: #000;
-            cursor: none;
+            font-family: 'Roboto Mono', monospace;
+            cursor: none; /* Скрываем курсор для полного погружения */
         }
 
         #scene {
             position: relative;
             width: 100%;
             height: 100%;
-            font-family: 'Roboto Mono', monospace;
             perspective: 1000px;
         }
 
@@ -35,7 +43,7 @@
             height: auto;
             transform: translateX(-50%) translateY(-50%);
             z-index: 1;
-            filter: blur(3px) brightness(0.7);
+            filter: blur(4px) brightness(0.6);
         }
 
         #effects-canvas {
@@ -54,7 +62,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            box-shadow: inset 0 0 20vw rgba(0,0,0,0.8);
+            box-shadow: inset 0 0 20vw rgba(0,0,0,0.9);
             pointer-events: none;
             z-index: 4;
         }
@@ -64,71 +72,80 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
+            width: 90%;
+            max-width: 1200px;
             text-align: center;
             z-index: 5;
         }
 
         #quote {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.5vw;
+            color: var(--text-color);
+            font-size: 1.8vw;
             letter-spacing: 0.1em;
-            text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 0 5px var(--glow-color), 0 0 15px rgba(0,0,0,0.8);
             transition: opacity 1.5s ease-in-out;
-            margin-bottom: 40px; /* Добавим отступ снизу */
+            margin-bottom: 50px;
+            font-weight: 300;
         }
+
         .typing::after {
             content: '█';
             animation: blink 1s step-end infinite;
+            color: var(--primary-color);
         }
+
         @keyframes blink { 50% { opacity: 0; } }
         
-        @media (max-width: 768px) { #quote { font-size: 3vw; } }
+        @media (max-width: 768px) { 
+            #quote { font-size: 3.5vw; } 
+        }
 
-        /* Стили для навигации */
+        /* --- НОВЫЕ СТИЛИ ДЛЯ КНОПОК --- */
         #navigation {
             display: flex;
             justify-content: center;
+            align-items: center; /* Выравнивание по центру */
             gap: 20px;
+            flex-wrap: wrap; /* Позволяет кнопкам переноситься на новую строку на маленьких экранах */
         }
 
-        .nav-link {
+        .nav-button {
             font-family: 'Roboto Mono', monospace;
-            color: rgba(255, 255, 255, 0.7);
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px 24px;
+            color: var(--primary-color);
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            padding: 15px 30px;
             text-decoration: none;
-            font-size: 1.2vw;
+            font-size: 1vw;
             letter-spacing: 0.1em;
-            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            text-transform: uppercase;
+            text-shadow: 0 0 8px var(--glow-color);
+            transition: all 0.3s ease;
             backdrop-filter: blur(5px);
+            cursor: pointer; /* Указатель для кнопок */
         }
 
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .nav-button:hover {
+            background: rgba(0, 255, 255, 0.1);
             color: #fff;
-            box-shadow: 0 0 15px rgba(255, 160, 60, 0.5);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 25px var(--glow-color);
+        }
+        
+        /* Стиль для кнопки плеера в состоянии воспроизведения */
+        #play-pause-btn.playing {
+            color: #000;
+            background: var(--primary-color);
+            box-shadow: 0 0 25px var(--glow-color);
         }
 
-        @media (max-width: 768px) { .nav-link { font-size: 2.5vw; padding: 10px 20px;} }
-        
-        #player-icon {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            cursor: pointer;
-            z-index: 5;
-            filter: drop-shadow(0 0 5px rgba(255, 160, 60, 0));
-            transition: transform 0.5s, filter 0.5s;
-            animation: pulse-glow 5s infinite;
+
+        @media (max-width: 768px) { 
+            .nav-button { 
+                font-size: 2.8vw; 
+                padding: 12px 24px;
+            } 
         }
-        #player-icon.playing { animation: spin 3s linear infinite, pulse-glow 5s infinite; filter: drop-shadow(0 0 10px rgba(255, 160, 60, 0.7)); }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse-glow { 0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 160, 60, 0.3)); } 50% { filter: drop-shadow(0 0 10px rgba(255, 160, 60, 0.6)); } }
     </style>
 </head>
 <body>
@@ -141,20 +158,15 @@
         
         <div id="content">
             <div id="quote" class="typing"></div>
+            <!-- ОБНОВЛЕННАЯ НАВИГАЦИЯ С КНОПКОЙ ЗАПУСКА -->
             <nav id="navigation">
-                <a href="https://kagekao666.github.io/other.html" class="nav-link" target="_blank" rel="noopener noreferrer">Другое</a>
-                <a href="https://kagekao666.github.io/filesharingsites.html" class="nav-link" target="_blank" rel="noopener noreferrer">Лучшие файлообменники</a>
-                <!-- Сюда можно добавлять другие ссылки -->
-                <!-- Сюда можно добавлять другие ссылки -->
+                <button id="play-pause-btn" class="nav-button">Запуск</button>
+                <a href="https://kagekao666.github.io/other.html" class="nav-button" target="_blank" rel="noopener noreferrer">Другое</a>
+                <a href="https://kagekao666.github.io/filesharingsites.html" class="nav-button" target="_blank" rel="noopener noreferrer">Файлообменники</a>
             </nav>
         </div>
         
-        <div id="player-icon">
-             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 90C72.0914 90 90 72.0914 90 50C90 27.9086 72.0914 10 50 10C27.9086 10 10 27.9086 10 50C10 72.0914 27.9086 90 50 90Z" stroke="rgba(255,255,255,0.7)" stroke-width="3"/>
-                <path d="M50 65C58.2843 65 65 58.2843 65 50C65 41.7157 58.2843 35 50 35" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-        </div>
+        <!-- ИКОНКА ПЛЕЕРА УДАЛЕНА ОТСЮДА -->
     </div>
     
     <audio id="track" src="https://pomf2.lain.la/f/ku6miygt.mp3" loop preload="auto"></audio>
@@ -166,50 +178,16 @@
         canvas.height = window.innerHeight;
 
         let embers = [], rain = [], snow = [], ash = [];
-        
         const weatherCycle = ['rain', 'calm', 'snow', 'calm', 'ash', 'calm'];
         let currentweatherIndex = 0;
-        const weatherState = {
-            opacity: { rain: 1, snow: 0, ash: 0 },
-            targetOpacity: { rain: 1, snow: 0, ash: 0 }
-        };
-        
+        const weatherState = { opacity: { rain: 1, snow: 0, ash: 0 }, targetOpacity: { rain: 1, snow: 0, ash: 0 } };
         const emberColors = ['#ffbe85', '#a6e2ff', '#ff8dff'];
         let currentEmberColorIndex = 0;
 
-        class Ember { /* ... unchanged ... */ constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.baseSize = Math.random() * 2 + 1; this.speedX = Math.random() * 0.2 - 0.1; this.speedY = Math.random() * 0.2 - 0.1; this.life = Math.random() * 300 + 150; this.maxLife = this.life; this.angle = Math.random() * Math.PI * 2; this.color = emberColors[currentEmberColorIndex]; } update() { this.angle += 0.01; this.x += this.speedX + Math.sin(this.angle) * 0.2; this.y += this.speedY + Math.cos(this.angle) * 0.2; this.life--; if (this.life <= 0) { this.reset(); } } draw() { const pulse = Math.sin(this.life * 0.05) * 0.4 + 0.6; const currentSize = this.baseSize * pulse; const opacity = (this.life / this.maxLife) * 0.7; ctx.save(); ctx.beginPath(); ctx.fillStyle = this.color; ctx.globalAlpha = opacity; ctx.shadowColor = this.color; ctx.shadowBlur = 10; ctx.arc(this.x, this.y, currentSize, 0, Math.PI * 2); ctx.fill(); ctx.restore(); } }
-        class RainStreak { /* ... unchanged ... */ constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * -canvas.height; this.length = Math.random() * 30 + 10; this.speed = Math.random() * 10 + 5; } update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); } draw() { ctx.globalAlpha = weatherState.opacity.rain; ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x, this.y + this.length); ctx.strokeStyle = `rgba(174, 194, 224, 0.5)`; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1; } }
-        class Snowflake { /* ... unchanged ... */ constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * -canvas.height; this.size = Math.random() * 3 + 1; this.speed = Math.random() * 1 + 0.5; this.angle = Math.random() * Math.PI * 2; } update() { this.y += this.speed; this.x += Math.sin(this.angle) * 0.5; this.angle += 0.01; if (this.y > canvas.height) this.reset(); } draw() { ctx.globalAlpha = weatherState.opacity.snow; ctx.fillStyle = `rgba(220, 230, 255, 0.8)`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; } }
-        
-        class Ash {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * -canvas.height;
-                this.size = Math.random() * 5 + 2;
-                this.speed = Math.random() * 0.5 + 0.2;
-                this.angle = Math.random() * Math.PI * 2;
-                this.rotation = Math.random() * Math.PI * 2;
-            }
-            update() {
-                this.y += this.speed;
-                this.x += Math.sin(this.angle) * 0.3;
-                this.angle += 0.01;
-                this.rotation += 0.01;
-                if (this.y > canvas.height) this.reset();
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = weatherState.opacity.ash * 0.7;
-                ctx.fillStyle = `rgba(200, 200, 200, 0.7)`;
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.beginPath();
-                ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
+        class Ember { constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.baseSize = Math.random() * 2 + 1; this.speedX = Math.random() * 0.2 - 0.1; this.speedY = Math.random() * 0.2 - 0.1; this.life = Math.random() * 300 + 150; this.maxLife = this.life; this.angle = Math.random() * Math.PI * 2; this.color = emberColors[currentEmberColorIndex]; } update() { this.angle += 0.01; this.x += this.speedX + Math.sin(this.angle) * 0.2; this.y += this.speedY + Math.cos(this.angle) * 0.2; this.life--; if (this.life <= 0) { this.reset(); } } draw() { const pulse = Math.sin(this.life * 0.05) * 0.4 + 0.6; const currentSize = this.baseSize * pulse; const opacity = (this.life / this.maxLife) * 0.7; ctx.save(); ctx.beginPath(); ctx.fillStyle = this.color; ctx.globalAlpha = opacity; ctx.shadowColor = this.color; ctx.shadowBlur = 10; ctx.arc(this.x, this.y, currentSize, 0, Math.PI * 2); ctx.fill(); ctx.restore(); } }
+        class RainStreak { constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * -canvas.height; this.length = Math.random() * 30 + 10; this.speed = Math.random() * 10 + 5; } update() { this.y += this.speed; if (this.y > canvas.height) this.reset(); } draw() { ctx.globalAlpha = weatherState.opacity.rain; ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(this.x, this.y + this.length); ctx.strokeStyle = `rgba(174, 194, 224, 0.5)`; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1; } }
+        class Snowflake { constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * -canvas.height; this.size = Math.random() * 3 + 1; this.speed = Math.random() * 1 + 0.5; this.angle = Math.random() * Math.PI * 2; } update() { this.y += this.speed; this.x += Math.sin(this.angle) * 0.5; this.angle += 0.01; if (this.y > canvas.height) this.reset(); } draw() { ctx.globalAlpha = weatherState.opacity.snow; ctx.fillStyle = `rgba(220, 230, 255, 0.8)`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; } }
+        class Ash { constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * -canvas.height; this.size = Math.random() * 5 + 2; this.speed = Math.random() * 0.5 + 0.2; this.angle = Math.random() * Math.PI * 2; this.rotation = Math.random() * Math.PI * 2; } update() { this.y += this.speed; this.x += Math.sin(this.angle) * 0.3; this.angle += 0.01; this.rotation += 0.01; if (this.y > canvas.height) this.reset(); } draw() { ctx.save(); ctx.globalAlpha = weatherState.opacity.ash * 0.7; ctx.fillStyle = `rgba(200, 200, 200, 0.7)`; ctx.translate(this.x, this.y); ctx.rotate(this.rotation); ctx.beginPath(); ctx.arc(0, 0, this.size, 0, Math.PI * 2); ctx.fill(); ctx.restore(); } }
 
         for (let i = 0; i < 150; i++) embers.push(new Ember());
         for (let i = 0; i < 400; i++) rain.push(new RainStreak());
@@ -230,34 +208,66 @@
             requestAnimationFrame(animate);
         }
         
-        const quotes = [ "All those moments will be lost in time...", "like tears in rain.", "Sometimes to love someone, you got to be a stranger.", "The view is different each time you look.", "A new life awaits you in the off-world colonies.", "What is a soul? A series of electrical impulses.", "The light that burns twice as bright burns half as long.", "Memories... you're talking about memories.", "It's too bad she won't live. But then again, who does?", "If you could see what I've seen with your eyes." ];
+        const quotes = [
+  "Все эти моменты будут потеряны во времени...",
+  "Конец всегда начало...",
+  "Иногда, чтобы любить кого-то, нужно оставаться для него чужим.",
+  "Лишь утратив всё до конца мы обретаем свободу.",
+  "Новая жизнь ждёт тебя в колониях за пределами Земли.",
+  "Что такое душа? Серия электрических импульсов.",
+  "Свет, который горит вдвое ярче, горит вдвое короче.",
+  "Воспоминания... ты говоришь о воспоминаниях.",
+  "Очень жаль, что она не будет жить. Но, в конце концов, кто будет?",
+  "Если бы ты мог увидеть то, что я видел твоими глазами."
+];
+
         
         const video = document.getElementById('video-bg');
         const audio = document.getElementById('track');
-        const playerIcon = document.getElementById('player-icon');
+        // --- ОБНОВЛЕННЫЙ КОД ДЛЯ УПРАВЛЕНИЯ ВОСПРОИЗВЕДЕНИЕМ ---
+        const playPauseBtn = document.getElementById('play-pause-btn');
         const quoteEl = document.getElementById('quote');
         let quoteIndex = 0;
+
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
         async function quoteCycle() { while (true) { const currentQuote = quotes[quoteIndex]; quoteEl.classList.add('typing'); for (let i = 0; i < currentQuote.length; i++) { quoteEl.textContent += currentQuote.charAt(i); await sleep(100); } quoteEl.classList.remove('typing'); await sleep(4000); quoteEl.style.opacity = '0'; await sleep(1500); quoteEl.textContent = ''; quoteEl.style.opacity = '1'; quoteIndex = (quoteIndex + 1) % quotes.length; } }
-        playerIcon.addEventListener('click', () => { if (audio.paused) { audio.play(); playerIcon.classList.add('playing'); } else { audio.pause(); playerIcon.classList.remove('playing'); } });
+        
+        playPauseBtn.addEventListener('click', () => { 
+            if (audio.paused) { 
+                audio.play(); 
+                playPauseBtn.classList.add('playing');
+                playPauseBtn.textContent = 'Пауза';
+            } else { 
+                audio.pause(); 
+                playPauseBtn.classList.remove('playing');
+                playPauseBtn.textContent = 'Запуск';
+            } 
+        });
+
         const scene = document.getElementById('scene');
-        scene.addEventListener('mousemove', (e) => { const x = (window.innerWidth / 2 - e.pageX) / 25; const y = (window.innerHeight / 2 - e.pageY) / 25; document.getElementById('video-bg').style.transform = `translateX(calc(-50% + ${-x}px)) translateY(calc(-50% + ${-y}px))`; document.getElementById('content').style.transform = `translateX(calc(-50% + ${x*1.5}px)) translateY(calc(-50% + ${y*1.5}px))`; canvas.style.transform = `translateX(${x*2}px) translateY(${y*2}px)`; });
+        scene.addEventListener('mousemove', (e) => { 
+            const x = (window.innerWidth / 2 - e.pageX) / 25; 
+            const y = (window.innerHeight / 2 - e.pageY) / 25; 
+            document.getElementById('video-bg').style.transform = `translateX(calc(-50% + ${-x}px)) translateY(calc(-50% + ${-y}px))`; 
+            document.getElementById('content').style.transform = `translate(calc(-50% + ${x*1.5}px), calc(-50% + ${y*1.5}px))`; 
+            canvas.style.transform = `translateX(${x*2}px) translateY(${y*2}px)`; 
+        });
+
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
         function changeWeather() {
             currentweatherIndex = (currentweatherIndex + 1) % weatherCycle.length;
             const newWeather = weatherCycle[currentweatherIndex];
-
             weatherState.targetOpacity.rain = newWeather === 'rain' ? 1 : 0;
             weatherState.targetOpacity.snow = newWeather === 'snow' ? 1 : 0;
             weatherState.targetOpacity.ash = newWeather === 'ash' ? 1 : 0;
-
             const duration = newWeather === 'calm' ? 15000 : 25000;
             setTimeout(changeWeather, duration);
         }
 
         function changeEmberColor() {
             currentEmberColorIndex = (currentEmberColorIndex + 1) % emberColors.length;
+            embers.forEach(e => e.color = emberColors[currentEmberColorIndex]);
         }
         setInterval(changeEmberColor, 10000);
 
@@ -265,8 +275,6 @@
         animate();
         quoteCycle();
         setTimeout(changeWeather, 25000);
-
     </script>
 </body>
 </html>
-
