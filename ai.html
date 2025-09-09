@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI</title>
+  <style>
+    :root{
+      --bg:#f6f3ef;
+      --card:#fff;
+      --accent:#2b2b1f;
+      --muted:#7a756b;
+      --line:#e6e0d8;
+      --serif:"Libre Baskerville", "Georgia", serif;
+      --sans:"Helvetica Neue", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:linear-gradient(180deg,var(--bg),#f2efe9);
+      color:var(--accent);
+      padding:48px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .card{
+      width:min(720px,94vw);
+      background:var(--card);
+      border:1px solid var(--line);
+      box-shadow:0 8px 30px rgba(30,30,20,0.06);
+      border-radius:10px;
+      padding:36px 44px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    header{display:block;margin-bottom:18px}
+    
+    /* --- ИЗМЕНЕНИЕ ЗДЕСЬ --- */
+    h1{
+      margin:0;
+      font-family:var(--serif);
+      font-size:24px;
+      letter-spacing:0.12em;
+      color:var(--accent);
+      text-align: center; /* Добавил это свойство */
+    }
+
+    hr.sep{border:none;border-top:1px solid var(--line);margin:20px 0}
+    
+    .links{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:10px;
+    }
+    .links li {
+      background:linear-gradient(180deg, rgba(240,238,234,0.6), rgba(255,255,255,0.4));
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.03);
+      transition:transform .12s ease,box-shadow .12s ease;
+    }
+    .links li:hover{
+      transform:translateY(-4px);
+      box-shadow:0 10px 22px rgba(30,30,18,0.06);
+    }
+
+    .links a {
+      display:flex;
+      align-items:center;
+      width: 100%;
+      padding:14px 16px;
+      text-decoration: none;
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .name{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      font-weight:600;
+      font-size:15px;
+      font-family:var(--serif);
+      text-transform:capitalize;
+    }
+    
+    @media (max-width:520px){.card{padding:20px}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <header><h1>AI</h1></header>
+    <hr class="sep" />
+    <ul class="links" aria-label="AI links">
+      <li>
+        <a href="https://venice.ai/" target="_blank" rel="noopener noreferrer">
+          <div class="name">AI без цензуры</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">
+          <div class="name">AiStudio</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">
+          <div class="name">ChatGPT</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">
+          <div class="name">Claude</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://chat.mistral.ai/" target="_blank" rel="noopener noreferrer">
+          <div class="name">Mistral</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://www.meta.ai/" target="_blank" rel="noopener noreferrer">
+          <div class="name">LLaMA</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://www.kimi.com/" target="_blank" rel="noopener noreferrer">
+          <div class="name">Kimi</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://chat.qwenlm.ai/" target="_blank" rel="noopener noreferrer">
+          <div class="name">Qwen</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="http://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">
+          <div class="name">DeepSeek</div>
+        </a>
+      </li>
+    </ul>
+  </main>
+
+</body>
+</html>
